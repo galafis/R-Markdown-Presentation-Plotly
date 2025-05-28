@@ -1,0 +1,93 @@
+/* Custom styles for the presentation */
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.title-slide {
+  background-color: #2c3e50;
+  color: #ffffff;
+}
+
+.title-slide h1 {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.title-slide h2 {
+  font-size: 1.5em;
+  font-weight: normal;
+  margin-bottom: 1em;
+}
+
+.title-slide h3 {
+  font-size: 1.2em;
+  font-style: italic;
+  margin-bottom: 2em;
+}
+
+h2 {
+  color: #2c3e50;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.3em;
+}
+
+.emphasized {
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+pre {
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+}
+
+code {
+  font-family: 'Source Code Pro', Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.footnote {
+  position: absolute;
+  bottom: 1em;
+  font-size: 0.8em;
+  color: #7f8c8d;
+}
+
+.plotly-graph {
+  margin: 0 auto;
+  width: 100%;
+  height: 500px;
+}
+
+.slide-content {
+  margin-top: 15px;
+}
+
+.gdbar img {
+  width: 300px !important;
+  height: 150px !important;
+  margin: 8px 8px;
+}
+
+.gdbar {
+  width: 400px !important;
+  height: 170px !important;
+}
+
+slides > slide.dark {
+  background-color: #2c3e50 !important;
+}
+
+slides > slide.title-slide hgroup h1 {
+  color: white;
+}
+
+slides > slide.title-slide hgroup h2 {
+  color: white;
+}
+
+slides > slide.title-slide p {
+  color: white;
+}

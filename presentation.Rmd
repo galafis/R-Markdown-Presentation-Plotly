@@ -1,0 +1,128 @@
+---
+title: "Interactive Data Visualization with Plotly"
+author: "Gabriel Demetrios Lafis"
+date: "May 28, 2025"
+output: 
+  ioslides_presentation:
+    widescreen: true
+    smaller: true
+    css: styles.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(plotly)
+library(dplyr)
+```
+
+## Introduction
+
+This presentation demonstrates the power of interactive data visualization using Plotly in R.
+
+- Plotly is a powerful visualization library that creates interactive web-based graphs
+- Interactive visualizations allow users to explore data more deeply
+- Perfect for presentations, dashboards, and data exploration
+
+## The Dataset: Motor Trend Car Road Tests
+
+We'll be using the famous `mtcars` dataset:
+
+```{r}
+# Load the data
+cars <- read.csv("data/mtcars.csv")
+# Display the first few rows
+head(cars, 3)
+```
+
+This dataset includes data from 32 automobiles from Motor Trend magazine (1973-1974).
+
+## Cars by Number of Forward Gears and Cylinders
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+# Create a grouped bar chart showing the distribution of cars by cylinders and gears
+p <- cars %>%
+  count(cyl, gear) %>%
+  plot_ly(x = ~cyl, y = ~n, color = ~factor(gear), type = "bar") %>%
+  layout(
+    title = "Distribution of Cars by Cylinders and Gears",
+    xaxis = list(title = "Number of Cylinders"),
+    yaxis = list(title = "Count"),
+    barmode = "stack",
+    legend = list(title = "Number of Gears")
+  )
+
+p
+```
+
+## Enhanced Visualization: Horsepower vs. MPG
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+# Create an interactive scatter plot
+p2 <- plot_ly(cars, x = ~hp, y = ~mpg, color = ~factor(cyl),
+             size = ~wt, sizes = c(20, 150),
+             text = ~paste("Car: ", model, 
+                          "<br>MPG: ", mpg,
+                          "<br>Horsepower: ", hp,
+                          "<br>Weight: ", wt,
+                          "<br>Cylinders: ", cyl),
+             hoverinfo = "text") %>%
+  layout(
+    title = "Horsepower vs. Fuel Efficiency",
+    xaxis = list(title = "Horsepower"),
+    yaxis = list(title = "Miles Per Gallon"),
+    legend = list(title = "Cylinders")
+  )
+
+p2
+```
+
+## Relationship Between Weight and Quarter Mile Time
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+# Create an interactive scatter plot with trend line
+p3 <- plot_ly(cars, x = ~wt, y = ~qsec) %>%
+  add_markers(
+    color = ~factor(am), 
+    colors = c("#FF5733", "#33A2FF"),
+    symbol = ~factor(am),
+    symbols = c("circle", "diamond"),
+    size = ~hp/10,
+    text = ~paste("Car: ", model, 
+                 "<br>Weight: ", wt, " tons",
+                 "<br>Quarter Mile: ", qsec, " sec",
+                 "<br>Transmission: ", ifelse(am == 0, "Automatic", "Manual")),
+    hoverinfo = "text"
+  ) %>%
+  add_lines(
+    data = cars,
+    x = ~wt,
+    y = fitted(lm(qsec ~ wt, data = cars)),
+    line = list(color = 'rgba(0, 0, 0, 0.5)', width = 2),
+    showlegend = FALSE,
+    name = "Trend Line"
+  ) %>%
+  layout(
+    title = "Car Weight vs. Quarter Mile Time",
+    xaxis = list(title = "Weight (tons)"),
+    yaxis = list(title = "Quarter Mile Time (sec)"),
+    legend = list(title = "Transmission",
+                 labels = c("Automatic", "Manual"))
+  )
+
+p3
+```
+
+## Conclusion
+
+### Benefits of Interactive Visualizations
+
+- **Engagement**: Users can explore data on their own terms
+- **Depth**: Multiple dimensions of data can be represented simultaneously
+- **Clarity**: Complex relationships become more apparent
+- **Accessibility**: Technical and non-technical audiences can understand insights
+
+### Next Steps
+
+- Explore more advanced Plotly features
+- Integrate with Shiny for even more interactivity
+- Create comprehensive dashboards for data analysis

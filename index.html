@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Data Visualization with Plotly</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        
+        h1 {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .author {
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+        
+        .date {
+            color: #bdc3c7;
+        }
+        
+        .section {
+            background-color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .code-block {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Source Code Pro', Consolas, monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        
+        .plot-container {
+            height: 500px;
+            margin-bottom: 30px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .btn-primary {
+            background-color: #2c3e50;
+            border-color: #2c3e50;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a252f;
+            border-color: #1a252f;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 0;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .plot-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header text-center">
+            <h1>Interactive Data Visualization with Plotly</h1>
+            <p class="author">Gabriel Demetrios Lafis</p>
+            <p class="date">May 28, 2025</p>
+        </div>
+        
+        <div class="section">
+            <h2>Introduction</h2>
+            <p>This presentation demonstrates the power of interactive data visualization using Plotly in R.</p>
+            <ul>
+                <li>Plotly is a powerful visualization library that creates interactive web-based graphs</li>
+                <li>Interactive visualizations allow users to explore data more deeply</li>
+                <li>Perfect for presentations, dashboards, and data exploration</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>The Dataset: Motor Trend Car Road Tests</h2>
+            <p>We'll be using the famous <code>mtcars</code> dataset:</p>
+            
+            <div class="code-block">
+                <pre># Load the data
+cars <- read.csv("data/mtcars.csv")
+# Display the first few rows
+head(cars, 3)</pre>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>MPG</th>
+                            <th>Cyl</th>
+                            <th>Disp</th>
+                            <th>HP</th>
+                            <th>Drat</th>
+                            <th>WT</th>
+                            <th>Qsec</th>
+                            <th>VS</th>
+                            <th>AM</th>
+                            <th>Gear</th>
+                            <th>Carb</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mazda RX4</td>
+                            <td>21.0</td>
+                            <td>6</td>
+                            <td>160.0</td>
+                            <td>110</td>
+                            <td>3.90</td>
+                            <td>2.620</td>
+                            <td>16.46</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>4</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>Mazda RX4 Wag</td>
+                            <td>21.0</td>
+                            <td>6</td>
+                            <td>160.0</td>
+                            <td>110</td>
+                            <td>3.90</td>
+                            <td>2.875</td>
+                            <td>17.02</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>4</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>Datsun 710</td>
+                            <td>22.8</td>
+                            <td>4</td>
+                            <td>108.0</td>
+                            <td>93</td>
+                            <td>3.85</td>
+                            <td>2.320</td>
+                            <td>18.61</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>4</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p>This dataset includes data from 32 automobiles from Motor Trend magazine (1973-1974).</p>
+        </div>
+        
+        <div class="section">
+            <h2>Cars by Number of Forward Gears and Cylinders</h2>
+            
+            <div class="code-block">
+                <pre># Create a grouped bar chart showing the distribution of cars by cylinders and gears
+p <- cars %>%
+  count(cyl, gear) %>%
+  plot_ly(x = ~cyl, y = ~n, color = ~factor(gear), type = "bar") %>%
+  layout(
+    title = "Distribution of Cars by Cylinders and Gears",
+    xaxis = list(title = "Number of Cylinders"),
+    yaxis = list(title = "Count"),
+    barmode = "stack",
+    legend = list(title = "Number of Gears")
+  )</pre>
+            </div>
+            
+            <div id="plot1" class="plot-container"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Enhanced Visualization: Horsepower vs. MPG</h2>
+            
+            <div class="code-block">
+                <pre># Create an interactive scatter plot
+p2 <- plot_ly(cars, x = ~hp, y = ~mpg, color = ~factor(cyl),
+             size = ~wt, sizes = c(20, 150),
+             text = ~paste("Car: ", model, 
+                          "&lt;br&gt;MPG: ", mpg,
+                          "&lt;br&gt;Horsepower: ", hp,
+                          "&lt;br&gt;Weight: ", wt,
+                          "&lt;br&gt;Cylinders: ", cyl),
+             hoverinfo = "text") %>%
+  layout(
+    title = "Horsepower vs. Fuel Efficiency",
+    xaxis = list(title = "Horsepower"),
+    yaxis = list(title = "Miles Per Gallon"),
+    legend = list(title = "Cylinders")
+  )</pre>
+            </div>
+            
+            <div id="plot2" class="plot-container"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Relationship Between Weight and Quarter Mile Time</h2>
+            
+            <div class="code-block">
+                <pre># Create an interactive scatter plot with trend line
+p3 <- plot_ly(cars, x = ~wt, y = ~qsec) %>%
+  add_markers(
+    color = ~factor(am), 
+    colors = c("#FF5733", "#33A2FF"),
+    symbol = ~factor(am),
+    symbols = c("circle", "diamond"),
+    size = ~hp/10,
+    text = ~paste("Car: ", model, 
+                 "&lt;br&gt;Weight: ", wt, " tons",
+                 "&lt;br&gt;Quarter Mile: ", qsec, " sec",
+                 "&lt;br&gt;Transmission: ", ifelse(am == 0, "Automatic", "Manual")),
+    hoverinfo = "text"
+  ) %>%
+  add_lines(
+    data = cars,
+    x = ~wt,
+    y = fitted(lm(qsec ~ wt, data = cars)),
+    line = list(color = 'rgba(0, 0, 0, 0.5)', width = 2),
+    showlegend = FALSE,
+    name = "Trend Line"
+  )</pre>
+            </div>
+            
+            <div id="plot3" class="plot-container"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Conclusion</h2>
+            
+            <h3>Benefits of Interactive Visualizations</h3>
+            <ul>
+                <li><strong>Engagement</strong>: Users can explore data on their own terms</li>
+                <li><strong>Depth</strong>: Multiple dimensions of data can be represented simultaneously</li>
+                <li><strong>Clarity</strong>: Complex relationships become more apparent</li>
+                <li><strong>Accessibility</strong>: Technical and non-technical audiences can understand insights</li>
+            </ul>
+            
+            <h3>Next Steps</h3>
+            <ul>
+                <li>Explore more advanced Plotly features</li>
+                <li>Integrate with Shiny for even more interactivity</li>
+                <li>Create comprehensive dashboards for data analysis</li>
+            </ul>
+            
+            <div class="mt-4">
+                <a href="https://github.com/galafis/R-Markdown-Presentation-Plotly" class="btn btn-primary">View on GitHub</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 Gabriel Demetrios Lafis. All rights reserved.</p>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Data and Plotting Scripts -->
+    <script>
+        // Load and parse the CSV data
+        async function loadData() {
+            const response = await fetch('data/mtcars.csv');
+            const data = await response.text();
+            
+            // Parse CSV
+            const rows = data.split('\n');
+            const headers = rows[0].split(',');
+            
+            const cars = [];
+            for (let i = 1; i < rows.length; i++) {
+                if (rows[i].trim() === '') continue;
+                
+                const values = rows[i].split(',');
+                const car = {};
+                
+                for (let j = 0; j < headers.length; j++) {
+                    if (j === 0) {
+                        car[headers[j]] = values[j];
+                    } else {
+                        car[headers[j]] = parseFloat(values[j]);
+                    }
+                }
+                
+                cars.push(car);
+            }
+            
+            return cars;
+        }
+        
+        // Create the plots once data is loaded
+        loadData().then(cars => {
+            // Prepare data for plot 1
+            const cylinders = [4, 6, 8];
+            const gears = [3, 4, 5];
+            
+            // Count cars by cylinders and gears
+            const countsByCylGear = {};
+            cylinders.forEach(cyl => {
+                countsByCylGear[cyl] = {};
+                gears.forEach(gear => {
+                    countsByCylGear[cyl][gear] = 0;
+                });
+            });
+            
+            cars.forEach(car => {
+                if (countsByCylGear[car.cyl] && countsByCylGear[car.cyl][car.gear] !== undefined) {
+                    countsByCylGear[car.cyl][car.gear]++;
+                }
+            });
+            
+            // Create plot 1: Stacked bar chart
+            const plot1Data = gears.map(gear => {
+                return {
+                    x: cylinders,
+                    y: cylinders.map(cyl => countsByCylGear[cyl][gear]),
+                    name: gear + ' Gears',
+                    type: 'bar'
+                };
+            });
+            
+            const plot1Layout = {
+                title: 'Distribution of Cars by Cylinders and Gears',
+                xaxis: {
+                    title: 'Number of Cylinders',
+                    tickvals: cylinders
+                },
+                yaxis: {
+                    title: 'Count'
+                },
+                barmode: 'stack',
+                legend: {
+                    title: {
+                        text: 'Number of Gears'
+                    }
+                }
+            };
+            
+            Plotly.newPlot('plot1', plot1Data, plot1Layout, {responsive: true});
+            
+            // Create plot 2: Scatter plot of HP vs MPG
+            const plot2Data = cylinders.map(cyl => {
+                const filteredCars = cars.filter(car => car.cyl === cyl);
+                
+                return {
+                    x: filteredCars.map(car => car.hp),
+                    y: filteredCars.map(car => car.mpg),
+                    mode: 'markers',
+                    name: cyl + ' Cylinders',
+                    marker: {
+                        size: filteredCars.map(car => car.wt * 5),
+                        sizemode: 'area',
+                        sizeref: 0.1
+                    },
+                    text: filteredCars.map(car => 
+                        `Car: ${car.model}<br>` +
+                        `MPG: ${car.mpg}<br>` +
+                        `Horsepower: ${car.hp}<br>` +
+                        `Weight: ${car.wt}<br>` +
+                        `Cylinders: ${car.cyl}`
+                    ),
+                    hoverinfo: 'text'
+                };
+            });
+            
+            const plot2Layout = {
+                title: 'Horsepower vs. Fuel Efficiency',
+                xaxis: {
+                    title: 'Horsepower'
+                },
+                yaxis: {
+                    title: 'Miles Per Gallon'
+                },
+                legend: {
+                    title: {
+                        text: 'Cylinders'
+                    }
+                }
+            };
+            
+            Plotly.newPlot('plot2', plot2Data, plot2Layout, {responsive: true});
+            
+            // Create plot 3: Weight vs Quarter Mile Time with transmission type
+            const automatic = cars.filter(car => car.am === 0);
+            const manual = cars.filter(car => car.am === 1);
+            
+            // Calculate trend line
+            const xValues = cars.map(car => car.wt);
+            const yValues = cars.map(car => car.qsec);
+            
+            // Simple linear regression
+            const n = xValues.length;
+            const sumX = xValues.reduce((a, b) => a + b, 0);
+            const sumY = yValues.reduce((a, b) => a + b, 0);
+            const sumXY = xValues.reduce((a, b, i) => a + b * yValues[i], 0);
+            const sumXX = xValues.reduce((a, b) => a + b * b, 0);
+            
+            const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+            const intercept = (sumY - slope * sumX) / n;
+            
+            const trendX = [...new Set(xValues)].sort((a, b) => a - b);
+            const trendY = trendX.map(x => slope * x + intercept);
+            
+            const plot3Data = [
+                {
+                    x: automatic.map(car => car.wt),
+                    y: automatic.map(car => car.qsec),
+                    mode: 'markers',
+                    name: 'Automatic',
+                    marker: {
+                        color: '#FF5733',
+                        size: automatic.map(car => car.hp / 5),
+                        symbol: 'circle'
+                    },
+                    text: automatic.map(car => 
+                        `Car: ${car.model}<br>` +
+                        `Weight: ${car.wt} tons<br>` +
+                        `Quarter Mile: ${car.qsec} sec<br>` +
+                        `Transmission: Automatic`
+                    ),
+                    hoverinfo: 'text'
+                },
+                {
+                    x: manual.map(car => car.wt),
+                    y: manual.map(car => car.qsec),
+                    mode: 'markers',
+                    name: 'Manual',
+                    marker: {
+                        color: '#33A2FF',
+                        size: manual.map(car => car.hp / 5),
+                        symbol: 'diamond'
+                    },
+                    text: manual.map(car => 
+                        `Car: ${car.model}<br>` +
+                        `Weight: ${car.wt} tons<br>` +
+                        `Quarter Mile: ${car.qsec} sec<br>` +
+                        `Transmission: Manual`
+                    ),
+                    hoverinfo: 'text'
+                },
+                {
+                    x: trendX,
+                    y: trendY,
+                    mode: 'lines',
+                    name: 'Trend Line',
+                    line: {
+                        color: 'rgba(0, 0, 0, 0.5)',
+                        width: 2
+                    }
+                }
+            ];
+            
+            const plot3Layout = {
+                title: 'Car Weight vs. Quarter Mile Time',
+                xaxis: {
+                    title: 'Weight (tons)'
+                },
+                yaxis: {
+                    title: 'Quarter Mile Time (sec)'
+                },
+                legend: {
+                    title: {
+                        text: 'Transmission'
+                    }
+                }
+            };
+            
+            Plotly.newPlot('plot3', plot3Data, plot3Layout, {responsive: true});
+        });
+    </script>
+</body>
+</html>
